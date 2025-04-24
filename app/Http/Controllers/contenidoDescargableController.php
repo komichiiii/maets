@@ -18,10 +18,10 @@ class contenidoDescargableController extends Controller
         $userId = Auth::id();
 
         // Realizar la consulta filtrada
-        $datos = DB::table('contenido_descargable')
-            ->join('contenido_creador_tabla', 'contenido_descargable.id', '=', 'contenido_creador_tabla.contenido_id')
-            ->where('contenido_creador_tabla.creador_id', $userId)
-            ->select('contenido_descargable.*')
+        $datos = DB::table('contenido_descargables')
+            ->join('contenido_creador_tablas', 'contenido_descargables.id', '=', 'contenido_creador_tablas.contenido_id')
+            ->where('contenido_creador_tablas.creador_id', $userId)
+            ->select('contenido_descargables.*')
             ->get();
 
         // Pasar los datos a la vista
@@ -45,7 +45,7 @@ class contenidoDescargableController extends Controller
         // Obtener el ID del usuario logueado
         $userId = Auth::id();
 
-        $sql = DB::insert("INSERT INTO contenido_descargable (nombre,desarrolladora,precio,requisitos,descripcion,imagen) VALUES (?,?,?,?,?,?)", [
+        $sql = DB::insert("INSERT INTO contenido_descargables (nombre,desarrolladora,precio,requisitos,descripcion,imagen) VALUES (?,?,?,?,?,?)", [
             $request->txtNombre,
             $request->txtDesarrolladora,
             $request->txtPrecio,
@@ -58,7 +58,7 @@ class contenidoDescargableController extends Controller
         $contenidoId = DB::getPdo()->lastInsertId();
 
         // Insertar en la tabla contenido_creador_tabla
-        DB::insert("INSERT INTO contenido_creador_tabla (contenido_id, creador_id) VALUES (?, ?)", [
+        DB::insert("INSERT INTO contenido_creador_tablas (contenido_id, creador_id) VALUES (?, ?)", [
             $contenidoId,
             $userId
         ]);
@@ -75,7 +75,7 @@ class contenidoDescargableController extends Controller
     {
         try {
             // Obtener el registro actual
-            $producto = DB::table('contenido_descargable')->where('id', $request->txtId)->first();
+            $producto = DB::table('contenido_descargables')->where('id', $request->txtId)->first();
 
             // Manejar la subida de la nueva imagen si se proporciona
             if ($request->hasFile('txtImagen')) {
@@ -92,7 +92,7 @@ class contenidoDescargableController extends Controller
                 $imageName = $producto->imagen;
             }
 
-            $sql = DB::update(" UPDATE contenido_descargable SET nombre=?, desarrolladora=?, precio=?, requisitos=?, descripcion=?, imagen=? where id=? ", [
+            $sql = DB::update(" UPDATE contenido_descargables SET nombre=?, desarrolladora=?, precio=?, requisitos=?, descripcion=?, imagen=? where id=? ", [
                 $request->txtNombre,
                 $request->txtDesarrolladora,
                 $request->txtPrecio,
@@ -119,9 +119,9 @@ class contenidoDescargableController extends Controller
     {
 
         try {
-            $imagen = DB::table('contenido_descargable')->where('id', $id)->value('imagen');
+            $imagen = DB::table('contenido_descargables')->where('id', $id)->value('imagen');
 
-            $sql = DB::delete("DELETE FROM contenido_descargable WHERE id=$id");
+            $sql = DB::delete("DELETE FROM contenido_descargables WHERE id=$id");
 
             if ($imagen && file_exists(public_path('images/' . $imagen))) {
                 unlink(public_path('images/' . $imagen));

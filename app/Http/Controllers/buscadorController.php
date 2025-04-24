@@ -18,7 +18,7 @@ class buscadorController extends Controller
         }
 
         // Realizar la búsqueda en la base de datos
-        $resultados = DB::table('contenido_descargable')
+        $resultados = DB::table('contenido_descargables')
             ->where('nombre', 'LIKE', "%{$query}%")
             ->orWhere('descripcion', 'LIKE', "%{$query}%")
             ->orWhere('precio', 'LIKE', "%{$query}%")

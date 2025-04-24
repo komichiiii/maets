@@ -12,22 +12,22 @@ class bibliotecaController extends Controller
     {
         $userId = Auth::id();
 
-         // Obtener las facturas del usuario
-         // Obtener los datos de PayPal con un JOIN
-         $datos = DB::table('factura')
-             ->join('detalles_factura', 'factura.id', '=', 'detalles_factura.factura_id')
-             ->join('contenido_descargable', 'detalles_factura.producto_id', '=', 'contenido_descargable.id')
-             ->where('factura.user_id', $userId)
-             ->select(
-                 'contenido_descargable.id',
-                 'contenido_descargable.nombre',
-                 'contenido_descargable.descripcion',
-                 'contenido_descargable.precio',
-                 'contenido_descargable.imagen',
-             )
-             ->get();
- 
-         // Pasar los paypal a la vista
-         return view('biblioteca.biblioteca', compact('datos'));
+        // Obtener las facturas del usuario
+        // Obtener los datos de PayPal con un JOIN
+        $datos = DB::table('facturas')
+            ->join('detalles_facturas', 'facturas.id', '=', 'detalles_facturas.factura_id')
+            ->join('contenido_descargables', 'detalles_facturas.producto_id', '=', 'contenido_descargables.id')
+            ->where('facturas.user_id', $userId)
+            ->select(
+                'contenido_descargables.id',
+                'contenido_descargables.nombre',
+                'contenido_descargables.descripcion',
+                'contenido_descargables.precio',
+                'contenido_descargables.imagen',
+            )
+            ->get();
+
+        // Pasar los paypal a la vista
+        return view('biblioteca.biblioteca', compact('datos'));
     }
 }

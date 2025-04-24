@@ -13,7 +13,7 @@ class imprimirController extends Controller
     public function facturaPdf($facturaId)
     {
         // Obtener los datos de la factura
-        $factura = DB::table('factura')->where('id', $facturaId)->first();
+        $factura = DB::table('facturas')->where('id', $facturaId)->first();
 
         if (!$factura) {
             return redirect()->route('home')->with("incorrecto", "Factura no encontrada");
@@ -23,24 +23,24 @@ class imprimirController extends Controller
         $usuario = DB::table('users')->where('id', $factura->user_id)->first();
 
         // Obtener los datos de facturación
-        $datosFactura = DB::table('datos_factura')->where('id', $factura->datos_factura_id)->first();
+        $datosFactura = DB::table('datos_facturas')->where('id', $factura->datos_factura_id)->first();
 
         // Obtener los datos de PayPal o Tarjeta según la factura
         if ($factura->paypal) {
             // Obtener el correo de PayPal desde la tabla paypal
-            $paypal = DB::table('usuario_paypal')
-                ->join('paypal', 'usuario_paypal.paypal_id', '=', 'paypal.id')
-                ->where('usuario_paypal.id', $factura->paypal)
-                ->select('paypal.correo')
+            $paypal = DB::table('usuario_paypals')
+                ->join('paypals', 'usuario_paypals.paypal_id', '=', 'paypals.id')
+                ->where('usuario_paypals.id', $factura->paypal)
+                ->select('paypals.correo')
                 ->first();
 
             $metodoPago = $paypal; // Asignar el objeto paypal
             $tipoMetodo = 'PayPal';
         } else {
             // Obtener los datos de la tarjeta
-            $tarjeta = DB::table('usuario_tarjeta')->where('id', $factura->tarjeta)->first();
+            $tarjeta = DB::table('usuario_tarjetas')->where('id', $factura->tarjeta)->first();
             if ($tarjeta) {
-                $metodoPago = DB::table('tarjeta')->where('id', $tarjeta->tarjeta_id)->first();
+                $metodoPago = DB::table('tarjetas')->where('id', $tarjeta->tarjeta_id)->first();
             } else {
                 $metodoPago = null;
             }
@@ -48,10 +48,10 @@ class imprimirController extends Controller
         }
 
         // Obtener los productos de la factura
-        $productosFactura = DB::table('detalles_factura')
-            ->join('contenido_descargable', 'detalles_factura.producto_id', '=', 'contenido_descargable.id')
-            ->where('detalles_factura.factura_id', $facturaId)
-            ->select('contenido_descargable.nombre', 'detalles_factura.cantidad', 'detalles_factura.precio')
+        $productosFactura = DB::table('detalles_facturas')
+            ->join('contenido_descargables', 'detalles_facturas.producto_id', '=', 'contenido_descargables.id')
+            ->where('detalles_facturas.factura_id', $facturaId)
+            ->select('contenido_descargables.nombre', 'detalles_facturas.cantidad', 'detalles_facturas.precio')
             ->get();
 
         // Calcular el total de la factura

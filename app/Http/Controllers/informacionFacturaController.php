@@ -10,14 +10,14 @@ class informacionFacturaController extends Controller
 {
     public function datos()
     {
-         // Obtener el ID del usuario logueado
-         $userId = Auth::id();
+        // Obtener el ID del usuario logueado
+        $userId = Auth::id();
 
-         // Obtener las facturas del usuario
-         $datos = DB::table('datos_factura')->where('user_id', $userId)->get();
- 
-         // Pasar las facturas a la vista
-         return view('informacionFactura.InformacionFactura', compact('datos'));
+        // Obtener las facturas del usuario
+        $datos = DB::table('datos_facturas')->where('user_id', $userId)->get();
+
+        // Pasar las facturas a la vista
+        return view('informacionFactura.InformacionFactura', compact('datos'));
     }
 
 
@@ -25,7 +25,7 @@ class informacionFacturaController extends Controller
     {
         $userId = Auth::id();
         // Verificar si ya tiene un PayPal registrado
-        $tieneDatos = DB::table('datos_factura')
+        $tieneDatos = DB::table('datos_facturas')
             ->where('user_id', $userId)
             ->exists();
         if ($tieneDatos) {
@@ -34,7 +34,7 @@ class informacionFacturaController extends Controller
         try {
             // Obtener el ID del usuario logueado
             $userId = Auth::id();
-            $sql = DB::insert("INSERT INTO datos_factura (nombres, apellidos, direccion, localidad, codigo_postal, pais, telefono,user_id) VALUES (?,?,?,?,?,?,?,?)", [
+            $sql = DB::insert("INSERT INTO datos_facturas (nombres, apellidos, direccion, localidad, codigo_postal, pais, telefono,user_id) VALUES (?,?,?,?,?,?,?,?)", [
                 $request->txtNombres,
                 $request->txtApellidos,
                 $request->txtDireccion,
@@ -56,7 +56,7 @@ class informacionFacturaController extends Controller
     public function update(Request $request)
     {
         try {
-            $sql = DB::update(" UPDATE datos_factura SET nombres=?, apellidos=?, direccion=?, localidad=?, codigo_postal=?, pais=?, telefono=? where id=? ", [
+            $sql = DB::update(" UPDATE datos_facturas SET nombres=?, apellidos=?, direccion=?, localidad=?, codigo_postal=?, pais=?, telefono=? where id=? ", [
                 $request->txtNombres,
                 $request->txtApellidos,
                 $request->txtDireccion,
@@ -83,7 +83,7 @@ class informacionFacturaController extends Controller
     public function delete($id)
     {
         try {
-            $sql = DB::delete("DELETE FROM datos_factura WHERE id=$id");
+            $sql = DB::delete("DELETE FROM datos_facturas WHERE id=$id");
         } catch (\Throwable $th) {
             $sql = 0;
         }

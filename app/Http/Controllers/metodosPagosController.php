@@ -11,24 +11,24 @@ class metodosPagosController extends Controller
     // crud tarjeta
     public function tarjeta()
     {
-         // Obtener el ID del usuario logueado
-         $userId = Auth::id();
+        // Obtener el ID del usuario logueado
+        $userId = Auth::id();
 
-         // Obtener las facturas del usuario
-         // Obtener los datos de PayPal con un JOIN
-         $datos = DB::table('usuario_tarjeta')
-             ->join('tarjeta', 'usuario_tarjeta.tarjeta_id', '=', 'tarjeta.id')
-             ->where('usuario_tarjeta.user_id', $userId)
-             ->select(
-                 'usuario_tarjeta.tarjeta_id',
-                 'tarjeta.numero_tarjeta',
-                 'tarjeta.fecha_caducidad',
-                 'tarjeta.codigo_seguridad'
-             )
-             ->get();
- 
-         // Pasar los paypal a la vista
-         return view('metodosPagos.tarjeta', compact('datos'));
+        // Obtener las facturas del usuario
+        // Obtener los datos de PayPal con un JOIN
+        $datos = DB::table('usuario_tarjetas')
+            ->join('tarjetas', 'usuario_tarjetas.tarjeta_id', '=', 'tarjetas.id')
+            ->where('usuario_tarjetas.user_id', $userId)
+            ->select(
+                'usuario_tarjetas.tarjeta_id',
+                'tarjetas.numero_tarjeta',
+                'tarjetas.fecha_caducidad',
+                'tarjetas.codigo_seguridad'
+            )
+            ->get();
+
+        // Pasar los paypal a la vista
+        return view('metodosPagos.tarjeta', compact('datos'));
     }
 
 
@@ -36,14 +36,14 @@ class metodosPagosController extends Controller
     {
         $userId = Auth::id();
         // Verificar si ya tiene un PayPal registrado
-        $tieneTarjeta = DB::table('usuario_tarjeta')
+        $tieneTarjeta = DB::table('usuario_tarjetas')
             ->where('user_id', $userId)
             ->exists();
         if ($tieneTarjeta) {
             return back()->with('incorrecto', 'Ya tienes una tarjeta registrada. Solo se permite una por usuario.');
         }
         try {
-            $sql = DB::insert("INSERT INTO tarjeta (numero_tarjeta, fecha_caducidad, codigo_seguridad) VALUES (?,?,?)", [
+            $sql = DB::insert("INSERT INTO tarjetas (numero_tarjeta, fecha_caducidad, codigo_seguridad) VALUES (?,?,?)", [
                 $request->txtNumero_tarjeta,
                 $request->txtFecha_caducidad,
                 $request->txtCodigo_seguridad
@@ -56,7 +56,7 @@ class metodosPagosController extends Controller
             $userId = Auth::id();
 
             // Insertar en la tabla contenido_creador_tabla
-            DB::insert("INSERT INTO usuario_tarjeta (tarjeta_id, user_id) VALUES (?, ?)", [
+            DB::insert("INSERT INTO usuario_tarjetas (tarjeta_id, user_id) VALUES (?, ?)", [
                 $tarjetaId,
                 $userId
             ]);
@@ -71,9 +71,9 @@ class metodosPagosController extends Controller
     }
     public function updateTarjeta(Request $request)
     {
-            
+
         try {
-            $sql = DB::update(" UPDATE tarjeta SET numero_tarjeta=?, fecha_caducidad=?, codigo_seguridad=? where id=? ", [
+            $sql = DB::update(" UPDATE tarjetas SET numero_tarjeta=?, fecha_caducidad=?, codigo_seguridad=? where id=? ", [
                 $request->txtNumero_tarjeta,
                 $request->txtFecha_caducidad,
                 $request->txtCodigo_seguridad,
@@ -96,7 +96,7 @@ class metodosPagosController extends Controller
     public function deleteTarjeta($id)
     {
         try {
-            $sql = DB::delete("DELETE FROM tarjeta WHERE id=$id");
+            $sql = DB::delete("DELETE FROM tarjetas WHERE id=$id");
         } catch (\Throwable $th) {
             $sql = 0;
         }
@@ -124,14 +124,14 @@ class metodosPagosController extends Controller
 
         // Obtener las facturas del usuario
         // Obtener los datos de PayPal con un JOIN
-        $datos = DB::table('usuario_paypal')
-            ->join('paypal', 'usuario_paypal.paypal_id', '=', 'paypal.id')
-            ->where('usuario_paypal.user_id', $userId)
+        $datos = DB::table('usuario_paypals')
+            ->join('paypals', 'usuario_paypals.paypal_id', '=', 'paypals.id')
+            ->where('usuario_paypals.user_id', $userId)
             ->select(
-                'usuario_paypal.paypal_id',
-                'paypal.correo',
-                'paypal.usuario',
-                'paypal.contrasenia'
+                'usuario_paypals.paypal_id',
+                'paypals.correo',
+                'paypals.usuario',
+                'paypals.contrasenia'
             )
             ->get();
 
@@ -144,14 +144,14 @@ class metodosPagosController extends Controller
     {
         $userId = Auth::id();
         // Verificar si ya tiene un PayPal registrado
-        $tienePaypal = DB::table('usuario_paypal')
+        $tienePaypal = DB::table('usuario_paypals')
             ->where('user_id', $userId)
             ->exists();
         if ($tienePaypal) {
             return back()->with('incorrecto', 'Ya tienes una cuenta PayPal registrada. Solo se permite una por usuario.');
         }
         try {
-            $sql = DB::insert("INSERT INTO paypal (correo, usuario, contrasenia) VALUES (?,?,?)", [
+            $sql = DB::insert("INSERT INTO paypals (correo, usuario, contrasenia) VALUES (?,?,?)", [
                 $request->txtCorreo,
                 $request->txtUsuario,
                 $request->txtContrasenia
@@ -164,7 +164,7 @@ class metodosPagosController extends Controller
             $userId = Auth::id();
 
             // Insertar en la tabla contenido_creador_tabla
-            DB::insert("INSERT INTO usuario_paypal (paypal_id, user_id) VALUES (?, ?)", [
+            DB::insert("INSERT INTO usuario_paypals (paypal_id, user_id) VALUES (?, ?)", [
                 $paypalId,
                 $userId
             ]);
@@ -180,7 +180,7 @@ class metodosPagosController extends Controller
     public function updatePaypal(Request $request)
     {
         try {
-            $sql = DB::update(" UPDATE paypal SET correo=?, usuario=?, contrasenia=? where id=? ", [
+            $sql = DB::update(" UPDATE paypals SET correo=?, usuario=?, contrasenia=? where id=? ", [
                 $request->txtCorreo,
                 $request->txtUsuario,
                 $request->txtContrasenia,
@@ -203,7 +203,7 @@ class metodosPagosController extends Controller
     public function deletePaypal($id)
     {
         try {
-            $sql = DB::delete("DELETE FROM paypal WHERE id=$id");
+            $sql = DB::delete("DELETE FROM paypals WHERE id=$id");
         } catch (\Throwable $th) {
             $sql = 0;
         }
