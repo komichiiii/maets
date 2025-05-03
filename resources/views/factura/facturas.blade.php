@@ -39,7 +39,7 @@
                 <small class="text-muted">Total gastado: {{ number_format($totalGeneral, 2) }} €</small>
             </div>
         </div>
-        <script src="{{asset('\apexcharts.js-main\dist\apexcharts.min.js')}}"></script>
+        <script src="{{asset('https://cdn.jsdelivr.net/npm/apexcharts')}}"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var options = {

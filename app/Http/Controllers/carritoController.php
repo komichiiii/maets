@@ -17,7 +17,7 @@ class carritoController extends Controller
 
         // 1. Verificar si el usuario ya compró este producto
         $yaComprado = DB::table('facturas')
-            ->join('detalles_facturas', 'factura.id', '=', 'detalles_facturas.factura_id')
+            ->join('detalles_facturas', 'facturas.id', '=', 'detalles_facturas.factura_id')
             ->where('facturas.user_id', $userId)
             ->where('detalles_facturas.producto_id', $productoId)
             ->exists();
