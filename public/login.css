@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    background-color: #171d1e;
+}
+
+.wrapper {
+    width: 530px;
+    padding: 2rem 1rem;
+    margin: 50px auto;
+    background-color: #101415;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 20px 35px rgba(255, 255, 255, 0.101);
+}
+
+p {
+    color: white;
+    text-align: left;
+    margin-left: 33px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 1.2rem;
+}
+
+form input {
+    width: 92%;
+    outline: none;
+    border: 1px solid #fff;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background: #ffffff91;
+}
+
+.boton {
+    font-size: 1rem;
+    margin-top: 1.8rem;
+    padding: 10px 0px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    width: 90%;
+    background: #051028;
+    cursor: pointer;
+    color: white;
+
+}
+
+.boton:hover {
+    background: #182238;
+}
+
+input:focus {
+    border: 1px solid #000;
+}
+
+.terms input{
+    height: 1em;
+    width: 1em;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.terms label{
+    font-size: 0.7em;
+    color: #fff;
+}
+
+.terms  a {
+    color: rgb(17, 107, 143);
+    text-decoration: none;
+}
+
+.registrado {
+    font-size: 0.8em;
+    margin-top: 1.4rem;
+    color: #e5e5e5;
+}
+
+.registrado a {
+    color: rgb(17, 107, 143);
+    text-decoration: none;
+}
+
+.olvido{
+    text-align: right;
+    margin-right: 33px;
+    margin-top: 20px;
+    color: rgb(17, 107, 143);
+}
+
+/* 
+section {
+    position: relative;
+}
+
+.form-login {
+    text-align: center;
+}
+
+.input-name {
+
+}
+
+.input-password {
+
+}
+
+.btn-login {
+
+} */

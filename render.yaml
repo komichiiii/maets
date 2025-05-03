@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: laravel-app
+    env: docker
+    buildCommand: "./build.sh"
+    startCommand: "./start.sh"
+    envVars:
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: ballast.proxy.rlwy.net:47070  # Reemplaza con tu host
+      - key: DB_PORT
+        value: 47070  # Reemplaza con tu puerto
+      - key: DB_DATABASE
+        value: railway
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        sync: false  # Para que no se sobrescriba
