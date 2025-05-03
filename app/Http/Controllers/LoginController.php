@@ -32,7 +32,7 @@ class loginController extends Controller
             'password' => 'required|string|min:8|confirmed',
             // obligatorio, minimo 8 caracteres, confirmacion de la contraseña
         ]);
-
+//
         // creacion de un nuevo usuario
         $item = new User();
         $item->name = $request->name;
