@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ asset('pdf.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('https://cdn.jsdelivr.net/gh/komichiiii/maets-css@main/pdf.css') }}">
     <link rel="icon" href="{{asset('icons/Steam-Logo.png')}}">
     <title>PDF</title>
 </head>
