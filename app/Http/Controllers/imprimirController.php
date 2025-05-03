@@ -43,7 +43,7 @@ class imprimirController extends Controller
                 $metodoPago = DB::table('tarjetas')->where('id', $tarjeta->tarjeta_id)->first();
             } else {
                 $metodoPago = null;
-            }
+            } 
             $tipoMetodo = 'Tarjeta';
         }
 
