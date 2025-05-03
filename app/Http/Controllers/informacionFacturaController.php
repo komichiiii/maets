@@ -17,7 +17,7 @@ class informacionFacturaController extends Controller
         $datos = DB::table('datos_facturas')->where('user_id', $userId)->get();
 
         // Pasar las facturas a la vista
-        return view('informacionFactura.InformacionFactura', compact('datos'));
+        return view('informacionFactura.informacionFactura', compact('datos'));
     }
 
 
